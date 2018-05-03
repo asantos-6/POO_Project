@@ -1,4 +1,4 @@
-package Event;
+package Simulation;
 
 public abstract class Event {
 	public int t;
@@ -9,5 +9,9 @@ public abstract class Event {
 
 	public abstract void processEvent(Individual z, Individual[] z_list);
 	
+	
+	public String toString() {
+		return "Time: "+t;
+	}
 	
 }

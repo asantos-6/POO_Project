@@ -1,4 +1,4 @@
-package Event;
+package Simulation;
 
 public class Death extends Event {
 
