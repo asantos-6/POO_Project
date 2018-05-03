@@ -8,12 +8,14 @@ public class Graph {
 	int M;
 	int N;
 	int n_obs;
+	int cmax;
 	Node[][] nodes = new Node[M][N];
 	List<Edge> cost_edges;
 	
-	Graph(int M, int N, int n_obs, Coord[] obs, List<Edge> edges){
+	Graph(int M, int N, int cmax, int n_obs, Coord[] obs, List<Edge> edges){
 		this.M = M;
 		this.N = N;
+		this.cmax = cmax;
 		this.n_obs = n_obs;
 		
 		for (int y = 0; y < M; y++) {
