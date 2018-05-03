@@ -6,10 +6,10 @@ import java.util.*;
 
 public class Graph {
 	int M;//columns
-	int N;//lines
+	int N;//rows
 	int n_obs;
 	int cmax;
-	Node[][] nodes = new Node[M][N];
+	Node[][] nodes;
 	List<Edge> cost_edges;
 	
 	public Graph(int M, int N, int cmax, int n_obs, Coord[] obs, List<Edge> edges){
@@ -17,15 +17,18 @@ public class Graph {
 		this.N = N;
 		this.cmax = cmax;
 		this.n_obs = n_obs;
+		cost_edges = edges;
+		nodes = new Node[M][N];
 		
-		for (int y = 0; y < M; y++) {
-			for (int x = 0; x < N; x++) {
+		
+		for (int y = 1; y <= M; y++) {
+			for (int x = 1; x <= N; x++) {
 			    Coord xy = new Coord(x, y);
 			    for(int o = 0; o<n_obs; o++) {
 			    	if(obs[o].equals(xy))
-			    		nodes[y][x] = new Node(xy, true);
+			    		nodes[y-1][x-1] = new Node(xy, true);
 			    	else
-			    		nodes[y][x] = new Node(xy, false);
+			    		nodes[y-1][x-1] = new Node(xy, false);
 			    }			    
 			}
 		}
@@ -36,19 +39,19 @@ public class Graph {
 		for (int y = 0; y < M; y++) {
 			for (int x = 0; x < N; x++) {
 				Node n = nodes[y][x];
-			    if (y > 0) {     // has north
-			    	if (!nodes[y+1][x].obs)
-			    		n.neighbors[0] = nodes[y+1][x];
-			    }
-			    if (y < M - 1) { // has south
+			    if (y > 0) {     // has south
 			    	if (!nodes[y-1][x].obs)
-			    		n.neighbors[2] = nodes[y-1][x];
+			    		n.neighbors[0] = nodes[y-1][x];
 			    }
-			    if (x > 0) {     // has west~
+			    if (y < M-1) { // has north
+			    	if (!nodes[y+1][x].obs)
+			    		n.neighbors[2] = nodes[y+1][x];
+			    }
+			    if (x > 0) {     // has west
 			    	if (!nodes[y][x-1].obs)
 			    		n.neighbors[3] = nodes[y][x-1];
 			    }
-			    if (x < N - 1) { // has east
+			    if (x < N-1) { // has east
 			    	if (!nodes[y][x+1].obs)
 			    		n.neighbors[1] = nodes[y][x+1];
 			    }
@@ -57,13 +60,17 @@ public class Graph {
 	}
 	
 	public String toString() {
+		int i = 1;
 		String s = "";
 		
-		for ()
+		for (Edge e : cost_edges) {
+			s = s +"edge "+ i + " : " + e + "\n";
+			i++;
+		}
 		
 		
 		
-		return "\nColumns: "+ M + "\nLines: "+ N +"\nMaximum cost of an edge: "+ cmax+"\nNumber of obstacles: "+ n_obs+"\n";
+		return "\nColumns: "+ M + "\nRows: "+ N +"\nMaximum cost of an edge: "+ cmax+"\nNumber of obstacles: "+ n_obs+"\n Special Edges: \n"+ s;
 	}
 	
 	

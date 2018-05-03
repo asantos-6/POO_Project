@@ -29,7 +29,7 @@ public class Simulation {
 	
 	
 	
-	public void XML_Parser (File inputFile, Graph grid) {
+	public Graph XML_Parser (File inputFile) {
 		
 		try {
 		
@@ -186,6 +186,13 @@ public class Simulation {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		
+		Graph grid = new Graph (rowsnb, colsnb, cmax, n_obs, obstacles, edges);
+		
+		System.out.println("Graph Info: "+ grid);
+		
+		return grid;
 		
 		/*
 		

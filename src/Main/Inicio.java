@@ -14,9 +14,9 @@ public class Inicio {
 		
 		
 		
-		simulation.XML_Parser(filename, grid);
+		grid = simulation.XML_Parser(filename);
 		
-		
+		System.out.println("Graph Info:  22222 "+ grid);
 
 	}
 }
