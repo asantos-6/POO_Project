@@ -35,16 +35,20 @@ public class Graph {
 			for (int x = 0; x < N; x++) {
 				Node n = nodes[y][x];
 			    if (y > 0) {     // has north
-			      n.neighbors[0] = nodes[y+1][x];
+			    	if (!nodes[y+1][x].obs)
+			    		n.neighbors[0] = nodes[y+1][x];
 			    }
 			    if (y < M - 1) { // has south
-			    	n.neighbors[2] = nodes[y-1][x];
+			    	if (!nodes[y-1][x].obs)
+			    		n.neighbors[2] = nodes[y-1][x];
 			    }
-			    if (x > 0) {     // has west
-			    	n.neighbors[3] = nodes[y][x-1];
+			    if (x > 0) {     // has west~
+			    	if (!nodes[y][x-1].obs)
+			    		n.neighbors[3] = nodes[y][x-1];
 			    }
 			    if (x < N - 1) { // has east
-			    	n.neighbors[1] = nodes[y][x+1];
+			    	if (!nodes[y][x+1].obs)
+			    		n.neighbors[1] = nodes[y][x+1];
 			    }
 			}
 		}
