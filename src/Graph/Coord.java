@@ -1,10 +1,12 @@
 package Graph;
 
-class Coord {
-	final int x;
-	final int y;
+
+
+public class Coord {
+	public final int x;
+	public final int y;
 	
-	Coord(int x, int y){
+	public Coord(int x, int y){
 		this.x = x;
 		this.y = y;		
 	}

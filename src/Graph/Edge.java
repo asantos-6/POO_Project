@@ -1,7 +1,7 @@
 package Graph;
 import Graph.Coord;
 
-class Edge {
+public class Edge {
 	Coord xy_o;
 	Coord xy_d;
 	int c;
