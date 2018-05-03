@@ -6,7 +6,7 @@ public class Edge {
 	Coord xy_d;
 	int c;
 	
-	Edge(Coord xy_o, Coord xy_d, int cost){
+	public Edge(Coord xy_o, Coord xy_d, int cost){
 		this.xy_o = xy_o;
 		this.xy_d = xy_d;
 		c = cost;
@@ -42,4 +42,10 @@ public class Edge {
 			return false;
 		return true;
 	}
+	
+	
+	public String toString() {
+		return "XY1: " + xy_o + " / XY2: " + xy_d + " / Custo: "+ c;
+	}
+	
 }

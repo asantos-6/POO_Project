@@ -12,18 +12,18 @@ import Graph.*;
 public class Simulation {
 	
 	int finalinst, initpop, maxpop, comfortsens, colsnb, rowsnb, xinitial, yinitial, xfinal, yfinal, n_obs, death_param, repro_param, move_param;
-	int c_max, edge_cost;
-	int xi_aux, xf_aux, yi_aux, yf_aux;
+	int cmax, edge_cost;
+	int n_edge_max = 0;
 	
 	Coord [] obstacles;
+	Coord xy1_aux;
+	Coord xy2_aux;
 	Coord  xy_i;
 	Coord  xy_f;
-	
-	
+
 	Edge edge;
 	List<Edge> edges = new ArrayList<Edge>();
-	
-	
+
 	
 	public Simulation(){}
 	
@@ -74,11 +74,13 @@ public class Simulation {
 					bzone = true;
 					
 					
-					
 					xinitial = Integer.parseInt(attributes.getValue("xinitial"));
 					yinitial = Integer.parseInt(attributes.getValue("yinitial"));
 					xfinal = Integer.parseInt(attributes.getValue("xfinal"));
 					yfinal = Integer.parseInt(attributes.getValue("yfinal"));
+					
+					n_edge_max = n_edge_max + ((xfinal-xinitial)+(yfinal-yinitial))*2;
+							
 					
 				}
 				if (qName.equalsIgnoreCase("obstacles")) {
@@ -130,17 +132,52 @@ public class Simulation {
 			public void characters(char ch[], int start, int length) throws SAXException {
 				
 				if (bzone) {
+					
 					edge_cost = Integer.parseInt(new String(ch, start, length));
+					
+					if (cmax < edge_cost) {
+						cmax = edge_cost;
+					}
+					
+					for (int z = xinitial; z < xfinal; z++) {
+						
+						
+						xy1_aux = new Coord(z,yinitial);
+						xy2_aux = new Coord(z+1, yinitial);		
+						
+						edge = new Edge(xy1_aux, xy2_aux, edge_cost);
+						edges.add(edge);
+						
+						xy1_aux = new Coord(z,yfinal);
+						xy2_aux = new Coord(z+1, yfinal);	
+						
+						edge = new Edge(xy1_aux, xy2_aux, edge_cost);
+						edges.add(edge);
+						
+					}
+					
+					for (int z = yinitial; z < yfinal; z++) {
+						
+						
+						xy1_aux = new Coord(xinitial,z);
+						xy2_aux = new Coord(xinitial, z+1);		
+						
+						edge = new Edge(xy1_aux, xy2_aux, edge_cost);
+						edges.add(edge);
+						
+						xy1_aux = new Coord(xfinal, z);
+						xy2_aux = new Coord(xfinal, z+1);	
+						
+						edge = new Edge(xy1_aux, xy2_aux, edge_cost);
+						edges.add(edge);
+						
+					}
+					
 					bzone = false;
 				}
 				
 			}
-		};
-		
-		
-			
-		
-		
+		};//end DefaultHandler
 		
 		saxParser.parse(inputFile, handler);
 		 
@@ -150,7 +187,7 @@ public class Simulation {
 			e.printStackTrace();
 		}
 		
-		
+		/*
 		
 		System.out.println("Instante Final: " + finalinst);
 		System.out.println("População Inicial: " + initpop);
@@ -167,14 +204,20 @@ public class Simulation {
 		System.out.println("Death Param: " + death_param );
 		System.out.println("Repro Param: " + repro_param);
 		System.out.println("Move Param: " + move_param);
+		System.out.println("Edge Cost " + edge_cost);
+		System.out.println("N_Edge Max " + n_edge_max);
+		System.out.println("\n Edge List : ");
 		
+		int i= 1;
 		
+		for(Edge e: edges) {
+		System.out.println("\n edge " + i +  " : " + e);
+		i++;
+		}
+		*/
 		
 	}
 
-
-	
-	
 	
 	
 }

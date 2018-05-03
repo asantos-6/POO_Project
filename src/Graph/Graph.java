@@ -5,14 +5,14 @@ import java.util.*;
 
 
 public class Graph {
-	int M;
-	int N;
+	int M;//columns
+	int N;//lines
 	int n_obs;
 	int cmax;
 	Node[][] nodes = new Node[M][N];
 	List<Edge> cost_edges;
 	
-	Graph(int M, int N, int cmax, int n_obs, Coord[] obs, List<Edge> edges){
+	public Graph(int M, int N, int cmax, int n_obs, Coord[] obs, List<Edge> edges){
 		this.M = M;
 		this.N = N;
 		this.cmax = cmax;
@@ -55,4 +55,16 @@ public class Graph {
 			}
 		}
 	}
+	
+	public String toString() {
+		String s = "";
+		
+		for ()
+		
+		
+		
+		return "\nColumns: "+ M + "\nLines: "+ N +"\nMaximum cost of an edge: "+ cmax+"\nNumber of obstacles: "+ n_obs+"\n";
+	}
+	
+	
 }
