@@ -3,7 +3,7 @@ import java.util.*;
 
 import Event.Event;
 
-class PEC {
+public class PEC {
 	protected int t;
 	Comparator<Event> c = new EventComparator();
 	PriorityQueue<Event> pec = new PriorityQueue<Event>(10, c);

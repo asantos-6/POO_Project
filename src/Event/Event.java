@@ -1,17 +1,20 @@
 package Event;
+import PEC.*;
 
 public abstract class Event {
 	protected int t;
 	
-	public Event(int time){
-		t = time;
+	public Event(int m, PEC pec) {
+		
+		t = (int) ExpDistrib.expRandom((double) m);
+		pec.addEvPEC(this);
 	}
 
 	public int getT() {
 		return t;
 	}
 
-	public abstract void processEvent(Object z, Object[] z_list);	
+	public abstract void processEvent(Object z, Object[] z_list, Object State);
 	
 	@Override
 	public String toString() {

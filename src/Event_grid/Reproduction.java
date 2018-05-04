@@ -1,13 +1,17 @@
 package Event_grid;
 
 import Event.Event;
+import PEC.ExpDistrib;
+import PEC.PEC;
 
 public class Reproduction extends Event {
 
 	private static int ro;
 	
-	public Reproduction(int time, int ro) {
-		super(time);
+	
+	
+	public Reproduction(int ro, PEC pec) {
+		super(ro, pec);
 		Reproduction.ro = ro;
 	}
 
@@ -16,7 +20,8 @@ public class Reproduction extends Event {
 	}
 
 	@Override
-	public void processEvent(Individual z, Individual[] z_list) {		
+	public void processEvent(Individual z, Individual[] z_list, State state) {		
+		
 	}
 
 }
