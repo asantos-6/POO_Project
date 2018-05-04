@@ -9,6 +9,7 @@ import Graph.*;
 
 
 
+
 public class Simulation {
 	
 	int finalinst, initpop, maxpop, comfortsens, colsnb, rowsnb, xinitial, yinitial, xfinal, yfinal, n_obs, death_param, repro_param, move_param;
@@ -34,6 +35,7 @@ public class Simulation {
 		try {
 		
 			SAXParserFactory fact = SAXParserFactory.newInstance();
+			fact.setValidating(true);
 			SAXParser saxParser = fact.newSAXParser();
 			
 			DefaultHandler handler = new DefaultHandler() {
@@ -44,6 +46,7 @@ public class Simulation {
 			boolean bobstacle = false;
 			boolean bevent = false;
 
+			@Override
 			public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 
 				System.out.println("Start Element :" + qName);
@@ -111,7 +114,8 @@ public class Simulation {
 				}
 
 			}
-
+			
+			@Override
 			public void endElement(String uri, String localName, String qName) throws SAXException {
 
 				System.out.println("End Element :" + qName);
@@ -128,7 +132,8 @@ public class Simulation {
 				}
 
 			}
-
+			
+			@Override
 			public void characters(char ch[], int start, int length) throws SAXException {
 				
 				if (bzone) {
@@ -177,10 +182,37 @@ public class Simulation {
 				}
 				
 			}
+			
+			@Override
+			public void error(SAXParseException e) throws SAXException {
+			        System.out.println("Error: " + e.getMessage());
+			}
+			
+			@Override
+			public void fatalError(SAXParseException e) throws SAXException {
+		        System.out.println("Fatal error: " + e.getMessage());
+		    }
+			
+			
 		};//end DefaultHandler
 		
 		saxParser.parse(inputFile, handler);
 		 
+		}
+
+		catch (IOException ioe) {
+			System.err.println("IO error");
+			ioe.printStackTrace();
+		}
+		
+		catch (SAXException se) {
+			System.err.println("Parser error");
+			se.printStackTrace();
+		}
+		
+		catch (ParserConfigurationException pce) {
+			System.err.println("Parser configuration error");
+			pce.printStackTrace();
 		}
 		
 		catch (Exception e) {
@@ -195,7 +227,6 @@ public class Simulation {
 		return grid;
 		
 		/*
-		
 		System.out.println("Instante Final: " + finalinst);
 		System.out.println("População Inicial: " + initpop);
 		System.out.println("Max. Pop. : "+ maxpop);
@@ -214,15 +245,12 @@ public class Simulation {
 		System.out.println("Edge Cost " + edge_cost);
 		System.out.println("N_Edge Max " + n_edge_max);
 		System.out.println("\n Edge List : ");
-		
 		int i= 1;
-		
 		for(Edge e: edges) {
 		System.out.println("\n edge " + i +  " : " + e);
 		i++;
 		}
-		*/
-		
+		*/	
 	}
 
 	
