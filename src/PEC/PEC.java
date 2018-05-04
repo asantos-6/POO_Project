@@ -1,9 +1,12 @@
-package Simulation;
+package PEC;
 import java.util.*;
+
+import Event.Event;
 
 class PEC {
 	protected int t;
-	PriorityQueue<Event> pec = new PriorityQueue<Event>();
+	Comparator<Event> c = new EventComparator();
+	PriorityQueue<Event> pec = new PriorityQueue<Event>(10, c);
 	
 	PEC() {
 		t = 0;
@@ -19,9 +22,10 @@ class PEC {
 	
 	public String toString() {
 		String s = "";
-		for (Event e : pec) {
-			s = s + e.t + "; ";
-		}
+		int i = 1;
+		while (pec.size() != 0){
+            s = s+ "Event_" + i + ":" + pec.remove();
+        }
 		return s;
 	}
 	

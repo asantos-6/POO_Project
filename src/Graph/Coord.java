@@ -1,16 +1,23 @@
 package Graph;
 
-
-
 public class Coord {
-	public final int x;
-	public final int y;
+	final int x;
+	final int y;
 	
 	public Coord(int x, int y){
 		this.x = x;
 		this.y = y;		
 	}
 
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -19,6 +26,7 @@ public class Coord {
 		return result;
 	}
 
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -34,6 +42,7 @@ public class Coord {
 		return true;
 	}
 	
+	@Override
 	public String toString() {
 		return "("+ x + ";"+ y+")";
 	}

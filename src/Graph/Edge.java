@@ -12,6 +12,20 @@ public class Edge {
 		c = cost;
 	}
 
+	public Coord getXy_o() {
+		return xy_o;
+	}
+
+	public Coord getXy_d() {
+		return xy_d;
+	}
+
+	public int getC() {
+		return c;
+	}
+
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -43,7 +57,7 @@ public class Edge {
 		return true;
 	}
 	
-	
+	@Override
 	public String toString() {
 		return "XY1: " + xy_o + " / XY2: " + xy_d + " / Custo: "+ c;
 	}
