@@ -1,15 +1,17 @@
-package Simulation;
+package PEC;
+import java.util.*;
 
-import java.util.Comparator;
+import Event.Event;
+
 
 public class EventComparator implements Comparator<Event>{
     @Override
     public int compare(Event x, Event y){
-        if (x.t < y.t)
+        if (x.getT() < y.getT())
         {
             return -1;
         }
-        if (x.t > y.t)
+        if (x.getT() > y.getT())
         {
             return 1;
         }

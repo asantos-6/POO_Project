@@ -5,31 +5,33 @@ import java.io.*;
 import javax.xml.parsers.*;
 import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
-import Graph.*;
+import Graph.Edge;
+import Graph.Coord;
+import Graph_grid.*;
 
 
 
 public class Simulation {
 	
-	int finalinst, initpop, maxpop, comfortsens, colsnb, rowsnb, xinitial, yinitial, xfinal, yfinal, n_obs, death_param, repro_param, move_param;
-	int cmax, edge_cost;
-	int n_edge_max = 0;
+	protected int finalinst, initpop, maxpop, comfortsens, colsnb, rowsnb, xinitial, yinitial, xfinal, yfinal, n_obs, death_param, repro_param, move_param;
+	protected int cmax, edge_cost;
+	protected int n_edge_max = 0;
 	
-	Coord [] obstacles;
-	Coord xy1_aux;
-	Coord xy2_aux;
-	Coord  xy_i;
-	Coord  xy_f;
+	protected Coord [] obstacles;
+	protected Coord xy1_aux;
+	protected Coord xy2_aux;
+	protected Coord  xy_i;
+	protected Coord  xy_f;
 
-	Edge edge;
-	List<Edge> edges = new ArrayList<Edge>();
+	protected Edge edge;
+	protected List<Edge> edges = new ArrayList<Edge>();
 
 	
-	public Simulation(){}
+	//public Simulation(){}
 	
 	
 	
-	public Graph XML_Parser (File inputFile) {
+	public Graph_grid XML_Parser (File inputFile) {
 		
 		try {
 		
@@ -188,7 +190,7 @@ public class Simulation {
 		}
 		
 		
-		Graph grid = new Graph (rowsnb, colsnb, cmax, n_obs, obstacles, edges);
+		Graph_grid grid = new Graph_grid (rowsnb, colsnb, cmax, n_obs, obstacles, edges);
 		
 		System.out.println("Graph Info: "+ grid);
 		
