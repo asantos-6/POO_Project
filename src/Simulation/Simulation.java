@@ -26,10 +26,6 @@ public class Simulation {
 
 	protected Edge edge;
 	protected List<Edge> edges = new ArrayList<Edge>();
-
-	
-	//public Simulation(){}
-	
 	
 	
 	public Graph_grid XML_Parser (File inputFile) {
@@ -51,7 +47,7 @@ public class Simulation {
 			@Override
 			public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 
-				System.out.println("Start Element :" + qName);
+				//System.out.println("Start Element :" + qName);
 
 				if (qName.equalsIgnoreCase("simulation")) {
 					finalinst = Integer.parseInt(attributes.getValue("finalinst"));
@@ -120,7 +116,7 @@ public class Simulation {
 			@Override
 			public void endElement(String uri, String localName, String qName) throws SAXException {
 
-				System.out.println("End Element :" + qName);
+				//System.out.println("End Element :" + qName);
 				
 				if (qName.equalsIgnoreCase("specialcostzones")) {
 					special_zones = false;
@@ -223,8 +219,6 @@ public class Simulation {
 		
 		
 		Graph_grid grid = new Graph_grid (rowsnb, colsnb, cmax, n_obs, obstacles, edges);
-		
-		System.out.println("Graph Info: "+ grid);
 		
 		return grid;
 		
