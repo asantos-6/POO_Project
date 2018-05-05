@@ -17,6 +17,7 @@ public class Graph_grid extends Graph{
 
 	List<Edge> cost_edges;
 	
+	
 	public Graph_grid(int M, int N, int cmax, int n_obs, Coord[] obs, List<Edge> edges) {
 		super(M, N);
 		this.cmax = cmax;
