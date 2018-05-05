@@ -1,5 +1,7 @@
-package individuo;
+package State;
 import java.util.List;
+
+import Individual.Individual;
 
 
 

@@ -1,4 +1,4 @@
-package individuo;
+package Individual;
 
 import java.util.List;
 import Graph.*;
