@@ -8,6 +8,8 @@ import org.xml.sax.helpers.DefaultHandler;
 import Graph.Edge;
 import Graph.Coord;
 import Graph_grid.*;
+import PEC.PEC;
+import State.State;
 
 
 
@@ -26,6 +28,9 @@ public class Simulation {
 
 	protected Edge edge;
 	protected List<Edge> edges = new ArrayList<Edge>();
+	
+	protected PEC pec;
+	protected State state;
 	
 	
 	public Graph_grid XML_Parser (File inputFile) {
@@ -249,6 +254,27 @@ public class Simulation {
 		*/	
 	}
 
+
+	public Coord getXy_i() {
+		return xy_i;
+	}
+
+	public Coord getXy_f() {
+		return xy_f;
+	}
+
+	public PEC getPec() {
+		return pec;
+	}
+
+	public State getState() {
+		return state;
+	}
+
+	public List<Edge> getEdges() {
+		return edges;
+	}
 	
+
 	
 }

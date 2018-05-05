@@ -1,12 +1,17 @@
 package Event;
+import java.util.PriorityQueue;
+
 import PEC.*;
 
 public abstract class Event {
 	protected int t;
+	protected Object z;
+	protected static int m;
 	
-	public Event(int m, PEC pec) {
-		
-		t = (int) ExpDistrib.expRandom((double) m);
+	public Event(int m, PEC pec, int t, Object z) {
+		Event.m = m;
+		this.z = z;
+		this.t = t +(int) ExpDistrib.expRandom((double) m);
 		pec.addEvPEC(this);
 	}
 
@@ -14,7 +19,15 @@ public abstract class Event {
 		return t;
 	}
 
-	public abstract void processEvent(Object z, Object[] z_list, Object State);
+	public Object getZ() {
+		return z;
+	}
+
+	public static int getM() {
+		return m;
+	}
+
+	public abstract <E> void processEvent(PriorityQueue<E> z_list, Object Simulation);
 	
 	@Override
 	public String toString() {
@@ -42,7 +55,5 @@ public abstract class Event {
 			return false;
 		return true;
 	}
-	
-	
 	
 }

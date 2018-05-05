@@ -5,9 +5,9 @@ import Graph.Node;
 public class Node_grid extends Node {
 	protected boolean obs;
 
-	public Node_grid(Coord coord, boolean observation) {
+	public Node_grid(Coord coord, boolean obstacle) {
 		super(coord);
-		obs = observation;
+		obs = obstacle;
 	}
 
 	public boolean isObs() {

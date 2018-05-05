@@ -1,26 +1,27 @@
 package Event_grid;
 
+import java.util.PriorityQueue;
+
 import Event.Event;
-import PEC.ExpDistrib;
+import Individual.Individual;
 import PEC.PEC;
+import PiorityQueueExt.PriorityQueueExt;
+import Simulation.Simulation;
 
 public class Reproduction extends Event {
 
-	private static int ro;
-	
-	
-	
-	public Reproduction(int ro, PEC pec) {
-		super(ro, pec);
-		Reproduction.ro = ro;
+	public Reproduction(int ro, PEC pec, int t, Individual z) {
+		super(ro, pec, t, z);
 	}
 
-	public static int getRo() {
-		return ro;
-	}
-
+	@SuppressWarnings("unchecked")
 	@Override
-	public void processEvent(Individual z, Individual[] z_list, State state) {		
+	public <E> void processEvent(PriorityQueue<E> z_list, Object Simulation) {
+		Simulation sim = (Simulation) Simulation;
+		Individual i = (Individual) this.z; 
+		PriorityQueue<Individual> i_list = (PriorityQueueExt<Individual>) z_list;	
+		
+		
 		
 	}
 
