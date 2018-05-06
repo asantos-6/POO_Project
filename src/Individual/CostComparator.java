@@ -1,17 +1,15 @@
-package State;
-import java.util.*;
-
-import Individual.Individual;;
+package Individual;
+import java.util.*;;
 
 
 public class CostComparator implements Comparator<Individual>{
     @Override
     public int compare(Individual x, Individual y){
-        if (x.getCost() < y.getCost())
+        if (x.TotCost() < y.TotCost())
         {
             return 1;
         }
-        if (x.getCost() > y.getCost())
+        if (x.TotCost() > y.TotCost())
         {
             return -1;
         }

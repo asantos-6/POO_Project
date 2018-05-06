@@ -8,10 +8,9 @@ public abstract class Event {
 	protected Object z;
 	protected static int m;
 	
-	public Event(int m, PEC pec, int t, Object z) {
-		Event.m = m;
+	public Event(PEC pec, int t, Object z) {
 		this.z = z;
-		this.t = t +(int) ExpDistrib.expRandom((double) m);
+		this.t = t +(int) Math.ceil(ExpDistrib.expRandom((double) m));
 		pec.addEvPEC(this);
 	}
 
@@ -25,6 +24,10 @@ public abstract class Event {
 
 	public static int getM() {
 		return m;
+	}
+
+	public static void setM(int m) {
+		Event.m = m;
 	}
 
 	public abstract <E> void processEvent(PriorityQueue<E> z_list, Object Simulation);

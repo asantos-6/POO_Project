@@ -5,11 +5,15 @@ import java.io.*;
 import javax.xml.parsers.*;
 import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
+
+import Event_grid.Death;
+import Event_grid.Move;
+import Event_grid.Reproduction;
 import Graph.Edge;
 import Graph.Coord;
 import Graph_grid.*;
+import Individual.Individual;
 import PEC.PEC;
-import State.State;
 
 
 
@@ -27,13 +31,14 @@ public class Simulation {
 	protected Coord  xy_f;
 
 	protected Edge edge;
-	protected List<Edge> edges = new ArrayList<Edge>();
+	protected ArrayList<Edge> edges = new ArrayList<Edge>();
 	
-	protected PEC pec;
-	protected State state;
+	protected PEC pec = new PEC();
+	protected Graph_grid grid;
 	
+	protected int t=0;
 	
-	public Graph_grid XML_Parser (File inputFile) {
+	public Simulation (File inputFile) {
 		
 		try {
 		
@@ -222,10 +227,19 @@ public class Simulation {
 			e.printStackTrace();
 		}
 		
+		Individual.setXy_f(xy_f);
+		Individual.setCmax(cmax);
+		Individual.setK(comfortsens);
+		Individual.setN(colsnb);
+		Individual.setM(rowsnb);
 		
-		Graph_grid grid = new Graph_grid (rowsnb, colsnb, cmax, n_obs, obstacles, edges);
+		Death.setM(death_param);
+		Move.setM(move_param);
+		Reproduction.setM(repro_param);
 		
-		return grid;
+		grid = new Graph_grid (rowsnb, colsnb, cmax, n_obs, obstacles, edges);
+		
+		return;
 		
 		/*
 		System.out.println("Instante Final: " + finalinst);
@@ -267,12 +281,12 @@ public class Simulation {
 		return pec;
 	}
 
-	public State getState() {
-		return state;
-	}
-
 	public List<Edge> getEdges() {
 		return edges;
+	}
+
+	public Graph_grid getGrid() {
+		return grid;
 	}
 	
 

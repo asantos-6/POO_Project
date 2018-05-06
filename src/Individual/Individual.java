@@ -1,83 +1,122 @@
 package Individual;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+
 import Graph.Coord;
 import Graph_grid.Node_grid;
 import PEC.PEC;
+import PiorityQueueExt.PriorityQueueExt;
 import Event_grid.*;
 
 
 public class Individual {
-	int cost;
+
+	ArrayList<Integer> cost = new ArrayList<Integer>();
 	int length;
 	int dist;
 	boolean alive = true;
 	float comfort;
-	List<Coord> path = null;
+	ArrayList<Coord> path = new ArrayList<Coord>();
 	Node_grid node;
 	
-	Coord xy_f;
-	int cmax, k, N, M;
+	static Coord xy_f;
+	static int cmax, k, N, M;
 	
-	public Individual(Coord xy_f, Coord xy, Node_grid[][] graph, int mew, int delta, int ro, PEC pec, int t, int cmax, int k, int N, int M) {
-		cost=0;
+	static int tot_pop=0;
+	static boolean reached_final = false; 
+	static Comparator<Individual> c = new ComfortComparator();
+	static PriorityQueueExt<Individual> population = new PriorityQueueExt<Individual>(c);
+	
+	public Individual(Coord xy, Node_grid[][] graph,PEC pec, int t) {
+		cost.add(0);
+		path.add(xy);		
 		length=0;
-		comfort=0;
-		path.add(xy);
 		node = graph[xy.getX()][xy.getY()];
+		dist = calcDist();
+		comfort=0;
 		
-		this.xy_f = xy_f;
-		this.cmax = cmax;
-		this.k = k;
-		this.N=N;
-		this.M=M;
+		tot_pop++;
+		population.add(this);
+				
 		
-		
-		dist = calcDist(xy_f, xy);
-		
-		new Death(mew, pec, t, this);
-		new Move(delta, pec, t, this);
-		new Reproduction(ro, pec, t, this);
+		new Death(pec, t, this);
+		new Move(pec, t, this);
+		new Reproduction(pec, t, this);
 		
 	}
 	
-	protected int calcDist(Coord xy_f, Coord xy) {
-		return (Math.abs(xy_f.getX() - xy.getX())+Math.abs(xy_f.getY() - xy.getY()));
+	public Individual(ArrayList<Coord> child_path, ArrayList<Integer> child_cost, Node_grid[][] graph, PEC pec, int t) {
+		cost = child_cost; 
+		path = child_path;
+		length = path.size()-1;
+		Coord xy = path.get(path.size()-1);
+		node = graph[xy.getX()][xy.getY()];
+		dist = calcDist();
+		comfort = this.comfort_update();
+		
+		tot_pop++;
+		population.add(this);
+		
+		new Death(pec, t, this);
+		new Move(pec, t, this);
+		new Reproduction(pec, t, this);
+		
 	}
 	
+	protected int calcDist() {
+		return (Math.abs(Individual.xy_f.getX() - node.getXy().getX())+Math.abs(Individual.xy_f.getY() - node.getXy().getY()));
+	}
 	public void MoveIndividual(int cost, Node_grid node) {
-		if(!this.path.contains(node.getXy())) {
-			this.cost +=cost;
-			this.length++;
-			this.node = node;
+		this.node = node;
+		dist = calcDist();
+		
+		if(!path.contains(node.getXy())) {
+			this.cost.add(this.TotCost() + cost);
+			length++;											
+			path.add(node.getXy());
+			this.comfort_update();
 			
-			this.dist = calcDist(this.xy_f, node.getXy());
-			this.comfort_update(this.cost, this.length, this.N, this.M, this.dist, this.k, this.cmax);
-			this.path.add(node.getXy());
+			if(!reached_final) {
+				if(dist == 0) {
+					Individual.reached_final = true;
+					c = new CostComparator();
+					population.ChangeComparator(c);
+				}
+			}
 		}else {
-			//Eliminar ciclos do caminho aqui
+			int i = path.indexOf(node.getXy());
+			
+			path.subList(0, i+1);
+			this.cost.subList(0, i+1);
+			
+			length = path.size()-1;
+			this.comfort_update();
 		}
 		
-		return; //Adicionar return se dist == 0; ??
+		return;
 		
 	}
 	
-	public void lenght_update () {
-
-	}
-
-	
-    public void comfort_update (int cost, int lenght, int n, int m, int distance, int k, int cmax){
-    	this.comfort=(((1-(cost-lenght+2)/((cmax-1)*lenght + 3))^k)*((1-(dist/(n+m+1)))^k));
-    	
+    public float comfort_update (){
+    	return (((1-(this.TotCost()-length+2)/((cmax-1)*length + 3))^k)*((1-(dist/(N+M+1)))^k));    	
     }
+    
+    public Individual best_fit() {
+		return population.peek();
+	}
 
 	public float getComfort() {
 		return comfort;
 	}
 
-	public int getCost() {
+	public ArrayList<Integer> getCost() {
 		return cost;
+	}
+
+	public int TotCost() {
+		return this.cost.get(this.cost.size()-1);
 	}
 
 	public boolean isAlive() {
@@ -92,50 +131,40 @@ public class Individual {
 		return node;
 	}
 
+	public List<Coord> getPath() {
+		return path;
+	}
+
 	public void setNode(Node_grid node) {
 		this.node = node;
 	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (alive ? 1231 : 1237);
-		result = prime * result + Float.floatToIntBits(comfort);
-		result = prime * result + cost;
-		result = prime * result + dist;
-		result = prime * result + length;
-		result = prime * result + ((path == null) ? 0 : path.hashCode());
-		return result;
+	
+	public static void setXy_f(Coord xy_f) {
+		Individual.xy_f = xy_f;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Individual other = (Individual) obj;
-		if (alive != other.alive)
-			return false;
-		if (Float.floatToIntBits(comfort) != Float.floatToIntBits(other.comfort))
-			return false;
-		if (cost != other.cost)
-			return false;
-		if (dist != other.dist)
-			return false;
-		if (length != other.length)
-			return false;
-		if (path == null) {
-			if (other.path != null)
-				return false;
-		} else if (!path.equals(other.path))
-			return false;
-		return true;
-	}   
-	
-	
+	public static void setCmax(int cmax) {
+		Individual.cmax = cmax;
+	}
+
+	public static void setK(int k) {
+		Individual.k = k;
+	}
+
+	public static void setN(int n) {
+		Individual.N = n;
+	}
+
+	public static void setM(int m) {
+		Individual.M = m;
+	}
+
+	public static int getTot_pop() {
+		return tot_pop;
+	}
+
+	public static void setTot_pop(int tot_pop) {
+		Individual.tot_pop = tot_pop;
+	}	
 	
 }

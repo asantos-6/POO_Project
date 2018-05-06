@@ -1,7 +1,5 @@
-package State;
-import java.util.*;
-
-import Individual.Individual;;
+package Individual;
+import java.util.*;;
 
 
 public class ComfortComparator implements Comparator<Individual>{
