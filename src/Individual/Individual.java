@@ -7,18 +7,18 @@ import java.util.List;
 import Graph.Coord;
 import Graph_grid.Node_grid;
 import PEC.PEC;
-import PiorityQueueExt.PriorityQueueExt;
+import Util.*;
 import Event_grid.*;
 
 
 public class Individual {
 
-	ArrayList<Integer> cost = new ArrayList<Integer>();
+	List<Integer> cost = new ArrayList<Integer>();
 	int length;
 	int dist;
 	boolean alive = true;
 	float comfort;
-	ArrayList<Coord> path = new ArrayList<Coord>();
+	List<Coord> path = new ArrayList<Coord>();
 	Node_grid node;
 	
 	static Coord xy_f;
@@ -47,7 +47,7 @@ public class Individual {
 		
 	}
 	
-	public Individual(ArrayList<Coord> child_path, ArrayList<Integer> child_cost, Node_grid[][] graph, PEC pec, int t) {
+	public Individual(List<Coord> child_path, List<Integer> child_cost, Node_grid[][] graph, PEC pec, int t) {
 		cost = child_cost; 
 		path = child_path;
 		length = path.size()-1;
@@ -88,8 +88,8 @@ public class Individual {
 		}else {
 			int i = path.indexOf(node.getXy());
 			
-			path.subList(0, i+1);
-			this.cost.subList(0, i+1);
+			path = DeepCopy.DeepCopylist_Coord(0, i+1, path);
+			this.cost = DeepCopy.DeepCopylist_Integer(0, i+1, this.cost);
 			
 			length = path.size()-1;
 			this.comfort_update();
@@ -111,7 +111,7 @@ public class Individual {
 		return comfort;
 	}
 
-	public ArrayList<Integer> getCost() {
+	public List<Integer> getCost() {
 		return cost;
 	}
 
@@ -166,5 +166,17 @@ public class Individual {
 	public static void setTot_pop(int tot_pop) {
 		Individual.tot_pop = tot_pop;
 	}	
+	
+	@Override
+	public String toString() {
+		String s = "";
+		for(Coord c : this.getPath()) {
+			if(this.getPath().indexOf(c) == this.getPath().size()-1)
+				s = s + c.toString();
+			else	
+				s = s + c.toString() + ",";
+		}
+		return "Path of the best fit individual: {" + s + "}";
+	}
 	
 }

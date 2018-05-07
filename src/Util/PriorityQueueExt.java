@@ -1,7 +1,9 @@
-package PiorityQueueExt;
+package Util;
 
 import java.util.Comparator;
 import java.util.PriorityQueue;
+
+import Individual.Individual;
 
 public class PriorityQueueExt<E> extends PriorityQueue<E> {
 	
@@ -30,6 +32,10 @@ public class PriorityQueueExt<E> extends PriorityQueue<E> {
 		}		
 		return aux_q;		
 		
+	}
+
+	public void add(Individual child) {
+		this.add(child);		
 	}
 
 }

@@ -37,6 +37,7 @@ public class Simulation {
 	protected Graph_grid grid;
 	
 	protected int t=0;
+	protected int n_events=0;
 	
 	public Simulation (File inputFile) {
 		

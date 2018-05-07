@@ -21,13 +21,4 @@ public class PEC{
 		return pec.poll();
 	}
 	
-	public String toString() {
-		String s = "";
-		int i = 1;
-		while (pec.size() != 0){
-            s = s+ "Event_" + i + ":" + pec.remove();
-        }
-		return s;
-	}
-	
 }
