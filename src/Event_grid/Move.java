@@ -8,13 +8,16 @@ import Event.Event;
 import Graph.Edge;
 import Graph_grid.Node_grid;
 import Individual.Individual;
+import PEC.ExpDistrib;
 import PEC.PEC;
 import Simulation.Simulation;
 
 public class Move extends Event {
+	protected static int delta;
 	
 	public Move(PEC pec, int t, Individual z) {
-		super(pec, t, z);
+		super(pec, z);
+		this.t = t +(int) Math.ceil(ExpDistrib.expRandom((double) delta));
 	}
 	
 	@Override
@@ -49,6 +52,19 @@ public class Move extends Event {
 			new Move(sim.getPec(), t, i);
 		}
 		return;
+	}
+
+	@Override
+	public String toString() {
+		return "Move [t=" + t + ", delta=" + delta + "]";
+	}
+
+	public static int getDelta() {
+		return delta;
+	}
+
+	public static void setDelta(int delta) {
+		Move.delta = delta;
 	}
 
 }

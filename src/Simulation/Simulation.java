@@ -15,9 +15,6 @@ import Graph_grid.*;
 import Individual.Individual;
 import PEC.PEC;
 
-
-
-
 public class Simulation {
 	
 	protected int finalinst, initpop, maxpop, comfortsens, colsnb, rowsnb, xinitial, yinitial, xfinal, yfinal, n_obs, death_param, repro_param, move_param;
@@ -234,11 +231,19 @@ public class Simulation {
 		Individual.setN(colsnb);
 		Individual.setM(rowsnb);
 		
-		Death.setM(death_param);
-		Move.setM(move_param);
-		Reproduction.setM(repro_param);
+		Death.setMew(death_param);
+		Move.setDelta(move_param);
+		Reproduction.setRo(repro_param);
 		
 		grid = new Graph_grid (rowsnb, colsnb, cmax, n_obs, obstacles, edges);
+		
+		
+		
+		for(int n = 0; n<initpop; n++) {
+			
+			Individual i = new Individual(xy_i, grid.getNodes(), pec, t);
+			Individual.getPopulation().add(i);
+		}
 		
 		return;
 		

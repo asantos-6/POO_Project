@@ -1,38 +1,23 @@
 package Simulation;
+import java.io.File;
 import java.util.*;
 
 import Event.Event;
-import PEC.EventComparator;
+import Individual.Individual;
+
 
 public class Main {
 	public static void main(String[] args) {
-		
-		
-		/*
-		Event ev1 = new Event(1);
-		Event ev2 = new Event(2);
-		Event ev3 = new Event(3);
-		Event ev4 = new Event(4);
-		Event ev100 = new Event(100);
-		
-		Comparator<Event> c = new EventComparator();
-		
-		PriorityQueue<Event> pec = new PriorityQueue<Event>(10, c);
-		
-		pec.add(ev3);
-		pec.add(ev2);
-		pec.add(ev1);
-		pec.add(ev100);
-		pec.add(ev1);
-		pec.add(ev1);
-		pec.add(ev4);
-		
-		while (pec.size() != 0)
-        {
-            System.out.println(pec.remove());
-        }
-        */
+		       
+            File filename = new File (""+args[0]+"");
+    		Simulation simulation = new Simulation(filename);
+    		
+    		//System.out.println("Graph Info in main: "+ simulation.getGrid());
+    		
+    		//while((PriorityQueue<Event>) simulation.pec)
+    		System.out.println("PEC: " + simulation.pec.toString());
 
+			
 	}
 	
 

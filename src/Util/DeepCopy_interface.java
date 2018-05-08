@@ -5,24 +5,10 @@ import java.util.List;
 
 import Graph.Coord;
 
-public class DeepCopy {
-
-	public static List<Coord> DeepCopylist_Coord(int fromIndex, int toIndex, List<Coord> list){
-		List<Coord> new_list = new ArrayList<Coord>(toIndex - fromIndex);
-		for(Coord c : list) {
-			if(((ArrayList<Coord>)list).indexOf(c) < fromIndex)
-				continue;
-			if(((ArrayList<Coord>)list).indexOf(c) == toIndex)
-				break;
-			else {
-				Coord new_c = new Coord(((Coord) c).getX(), ((Coord) c).getY());
-				new_list.add(new_c);
-			}
-		}
-		return  new_list;
-
-	}
-	
+public interface DeepCopy_interface {
+	/*
+	//INTERFACE!!!
+	public <E> List<E> DeepCopylist(int fromIndex, int toIndex, List<E> list);
 	public static List<Integer> DeepCopylist_Integer(int fromIndex, int toIndex, List<Integer> list) {
 		List<Integer> new_list = new ArrayList<Integer>(toIndex - fromIndex);
 		for(Integer i : list) {
@@ -37,6 +23,6 @@ public class DeepCopy {
 		}
 		return new_list;
 	}
-
-
+	List<Coord> DeepCopylist(int fromIndex, int toIndex, List<Coord> list);
+	*/
 }

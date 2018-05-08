@@ -33,17 +33,18 @@ public class Individual {
 		cost.add(0);
 		path.add(xy);		
 		length=0;
-		node = graph[xy.getX()][xy.getY()];
+		node = graph[xy.getX()-1][xy.getY()-1];
 		dist = calcDist();
 		comfort=0;
 		
 		tot_pop++;
+		
 		population.add(this);
 				
 		
 		new Death(pec, t, this);
 		new Move(pec, t, this);
-		new Reproduction(pec, t, this);
+		//new Reproduction(pec, t, this);
 		
 	}
 	
@@ -52,7 +53,7 @@ public class Individual {
 		path = child_path;
 		length = path.size()-1;
 		Coord xy = path.get(path.size()-1);
-		node = graph[xy.getX()][xy.getY()];
+		node = graph[xy.getX()-1][xy.getY()-1];
 		dist = calcDist();
 		comfort = this.comfort_update();
 		
@@ -66,7 +67,8 @@ public class Individual {
 	}
 	
 	protected int calcDist() {
-		return (Math.abs(Individual.xy_f.getX() - node.getXy().getX())+Math.abs(Individual.xy_f.getY() - node.getXy().getY()));
+		
+		return Math.abs(Individual.xy_f.getX() - node.getXy().getX())+Math.abs(Individual.xy_f.getY() - node.getXy().getY());
 	}
 	public void MoveIndividual(int cost, Node_grid node) {
 		this.node = node;
@@ -103,7 +105,7 @@ public class Individual {
     	return (((1-(this.TotCost()-length+2)/((cmax-1)*length + 3))^k)*((1-(dist/(N+M+1)))^k));    	
     }
     
-    public Individual best_fit() {
+    public static Individual best_fit() {
 		return population.peek();
 	}
 
@@ -167,16 +169,41 @@ public class Individual {
 		Individual.tot_pop = tot_pop;
 	}	
 	
-	@Override
-	public String toString() {
+	public static PriorityQueueExt<Individual> getPopulation() {
+		return population;
+	}
+
+	public static String print_path(List<Coord> path) {
 		String s = "";
-		for(Coord c : this.getPath()) {
-			if(this.getPath().indexOf(c) == this.getPath().size()-1)
+		for(Coord c : path) {
+			if(path.indexOf(c) == path.size()-1)
 				s = s + c.toString();
 			else	
 				s = s + c.toString() + ",";
 		}
-		return "Path of the best fit individual: {" + s + "}";
+		return "{" + s + "}";
+	}
+	public static String best_individual() {
+		String s = print_path(best_fit().path);
+		return "Path of the best fit individual: " + s;
 	}
 	
+	@Override
+	public String toString() {
+		String s = "";
+		
+		s = s + "Cost: " + this.TotCost() + ";\n";
+		s = s + "Length: " + this.length + ";\n";
+		s = s + "Dist: " + this.dist + ";\n";
+		s = s + "Alive: " + this.alive + ";\n";
+		s = s + "Cost: " + this.TotCost() + ";\n";
+		s = s + "Comfort: " + this.comfort + ";\n";
+		s = s + "Path: " + print_path(this.path) + ";\n";
+		s = s + "\n";
+		
+		s = s + "Goal: " + Individual.xy_f+"\n";
+		s = s + "\n";
+		return s;
+		
+	}
 }

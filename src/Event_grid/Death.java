@@ -4,12 +4,16 @@ import java.util.PriorityQueue;
 
 import Event.Event;
 import Individual.Individual;
+import PEC.ExpDistrib;
 import PEC.PEC;
 
 public class Death extends Event {
+	protected static int mew;
 	
 	public Death(PEC pec, int t, Individual z) {
-		super(pec, t, z);
+		super(pec, z);
+		this.t = t +(int) Math.ceil(ExpDistrib.expRandom((double) mew));
+		
 	}
 
 	@Override
@@ -21,7 +25,18 @@ public class Death extends Event {
 		i.setAlive(false);
 		return;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "Death [t=" + t + ", mew=" + mew + "]\n";
+	}
+
+	public static int getMew() {
+		return mew;
+	}
+
+	public static void setMew(int mew) {
+		Death.mew = mew;
+	}
 	
 }

@@ -6,14 +6,17 @@ import java.util.PriorityQueue;
 import Event.Event;
 import Graph.Coord;
 import Individual.Individual;
+import PEC.ExpDistrib;
 import PEC.PEC;
 import Util.*;
 import Simulation.Simulation;
 
 public class Reproduction extends Event {
+	protected static int ro;
 
 	public Reproduction(PEC pec, int t, Individual z) {
-		super(pec, t, z);
+		super(pec, z);
+		this.t = t +(int) Math.ceil(ExpDistrib.expRandom((double) ro));
 	}
 
 	@Override
@@ -38,6 +41,14 @@ public class Reproduction extends Event {
 		
 		return;		
 		
+	}
+
+	public static int getRo() {
+		return ro;
+	}
+
+	public static void setRo(int ro) {
+		Reproduction.ro = ro;
 	}
 
 }

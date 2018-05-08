@@ -6,11 +6,9 @@ import PEC.*;
 public abstract class Event {
 	protected int t;
 	protected Object z;
-	protected static int m;
 	
-	public Event(PEC pec, int t, Object z) {
-		this.z = z;
-		this.t = t +(int) Math.ceil(ExpDistrib.expRandom((double) m));
+	public Event(PEC pec, Object z) {
+		this.z = z;		
 		pec.addEvPEC(this);
 	}
 
@@ -22,20 +20,7 @@ public abstract class Event {
 		return z;
 	}
 
-	public static int getM() {
-		return m;
-	}
-
-	public static void setM(int m) {
-		Event.m = m;
-	}
-
 	public abstract <E> void processEvent(PriorityQueue<E> z_list, Object Simulation);
-	
-	@Override
-	public String toString() {
-		return "t="+t+";";
-	}
 
 	@Override
 	public int hashCode() {
