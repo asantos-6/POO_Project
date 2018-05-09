@@ -32,8 +32,9 @@ public class Simulation {
 	
 	protected PEC pec = new PEC();
 	protected Graph_grid grid;
+	protected Observation obs = new Observation();
 	
-	protected int t=0;
+	protected static int t=0;
 	protected int n_events=0;
 	
 	public Simulation (File inputFile) {
@@ -274,7 +275,33 @@ public class Simulation {
 		*/	
 	}
 
+	public void simulate() {
+		while(!pec.getPec().isEmpty() || t<finalinst) {
+			
+			pec.nextEvPEC().processEvent(Individual.getPopulation(), this);
+			
+			if(Individual.getTot_pop()==maxpop) {
+				int n = 0;
 
+				for(Individual i : Individual.getPopulation()) {
+					if(n>5) {
+						 boolean alive = new Random().nextDouble() < i.getComfort();
+						i.setAlive(alive);
+					}else if(i.isAlive())
+							n++;
+				}
+			}
+			
+			if(t % (finalinst/20) == 0) {
+				Observation.update_observation();
+				
+				System.out.println(obs.toString());				
+			}
+			t++;
+		}
+		
+	}
+	
 	public Coord getXy_i() {
 		return xy_i;
 	}

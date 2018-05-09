@@ -35,4 +35,11 @@ public class PriorityQueueExt<E> extends PriorityQueue<E> {
 	}
 
 
+
+	public void add_child(Individual child) {
+		this.add(child);
+		
+	}
+
+
 }

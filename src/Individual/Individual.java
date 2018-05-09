@@ -27,9 +27,9 @@ public class Individual {
 	static int tot_pop=0;
 	static boolean reached_final = false; 
 	static Comparator<Individual> c = new ComfortComparator();
-	static PriorityQueueExt<Individual> population = new PriorityQueueExt<Individual>(c);
+	static PriorityQueueExt<Individual> population = new PriorityQueueExt<Individual>(10, c);
 	
-	public Individual(Coord xy, Node_grid[][] graph,PEC pec, int t) {
+	public Individual(Coord xy, Node_grid[][] graph, PEC pec, int t) {
 		cost.add(0);
 		path.add(xy);		
 		length=0;
@@ -172,6 +172,11 @@ public class Individual {
 	public static PriorityQueueExt<Individual> getPopulation() {
 		return population;
 	}
+	
+
+	public static boolean isReached_final() {
+		return reached_final;
+	}
 
 	public static String print_path(List<Coord> path) {
 		String s = "";
@@ -183,9 +188,9 @@ public class Individual {
 		}
 		return "{" + s + "}";
 	}
-	public static String best_individual() {
+	public static String best_path() {
 		String s = print_path(best_fit().path);
-		return "Path of the best fit individual: " + s;
+		return "" + s;
 	}
 	
 	@Override

@@ -7,11 +7,12 @@ public class PEC{
 	protected int t;
 	Comparator<Event> c;
 	PriorityQueue<Event> pec;
+	static int n_events;
 	
 	public PEC() {
 		t = 0;
 		c = new EventComparator();
-		pec = new PriorityQueue<Event>(c);;
+		pec = new PriorityQueue<Event>(30, c);
 	}
 	
 	public void addEvPEC(Event ev) {
@@ -24,6 +25,19 @@ public class PEC{
 
 	@Override
 	public String toString() {
-		return "PEC [pec=" + pec + "]";
+		return "PEC " + pec;
 	}
+
+	public PriorityQueue<Event> getPec() {
+		return pec;
+	}
+
+	public static void setN_events(int n_events) {
+		PEC.n_events = n_events;
+	}
+
+	public static int getN_events() {
+		return n_events;
+	}
+
 }

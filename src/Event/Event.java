@@ -1,15 +1,12 @@
 package Event;
 import java.util.PriorityQueue;
 
-import PEC.*;
-
-public abstract class Event {
+public abstract class Event implements Comparable<Event>{
 	protected int t;
 	protected Object z;
 	
-	public Event(PEC pec, Object z) {
-		this.z = z;		
-		pec.addEvPEC(this);
+	public Event(Object z) {
+		this.z = z;	
 	}
 
 	public int getT() {
@@ -43,5 +40,14 @@ public abstract class Event {
 			return false;
 		return true;
 	}
+
+	@Override
+	public int compareTo(Event other) {
+		if(t > other.t) return 1;
+		else if (t == other.t) return 0;
+		else return -1;
+	}
+	
+	
 	
 }

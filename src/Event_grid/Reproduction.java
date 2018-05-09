@@ -15,8 +15,9 @@ public class Reproduction extends Event {
 	protected static int ro;
 
 	public Reproduction(PEC pec, int t, Individual z) {
-		super(pec, z);
+		super(z);
 		this.t = t +(int) Math.ceil(ExpDistrib.expRandom((double) ro));
+		pec.addEvPEC(this);
 	}
 
 	@Override
@@ -36,7 +37,9 @@ public class Reproduction extends Event {
 			
 			Individual child = new Individual(child_path, child_cost, sim.getGrid().getNodes(), sim.getPec(), this.t);			
 			
-			i_list.add(child);
+			i_list.add_child(child);
+			
+			PEC.setN_events(PEC.getN_events()+1);
 		}
 		
 		return;		

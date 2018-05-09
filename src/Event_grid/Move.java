@@ -10,14 +10,16 @@ import Graph_grid.Node_grid;
 import Individual.Individual;
 import PEC.ExpDistrib;
 import PEC.PEC;
+//import PEC.PEC;
 import Simulation.Simulation;
 
 public class Move extends Event {
 	protected static int delta;
 	
 	public Move(PEC pec, int t, Individual z) {
-		super(pec, z);
+		super(z);
 		this.t = t +(int) Math.ceil(ExpDistrib.expRandom((double) delta));
+		pec.addEvPEC(this);
 	}
 	
 	@Override
@@ -50,6 +52,8 @@ public class Move extends Event {
 			
 			i.MoveIndividual(cost, node);
 			new Move(sim.getPec(), t, i);
+			
+			PEC.setN_events(PEC.getN_events()+1);
 		}
 		return;
 	}
