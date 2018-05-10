@@ -30,7 +30,7 @@ public class Simulation {
 	protected Edge edge;
 	protected ArrayList<Edge> edges = new ArrayList<Edge>();
 	
-	protected PEC pec = new PEC();
+	protected PEC<Individual> pec = new PEC<Individual>();
 	protected Graph_grid grid;
 	protected Observation obs = new Observation();
 	
@@ -276,7 +276,7 @@ public class Simulation {
 	}
 
 	public void simulate() {
-		while(!pec.getPec().isEmpty() || t<finalinst) {
+		while(!pec.getPec().isEmpty() && t<finalinst) {
 			
 			pec.nextEvPEC().processEvent(Individual.getPopulation(), this);
 			
@@ -292,7 +292,7 @@ public class Simulation {
 				}
 			}
 			
-			if(t % (finalinst/20) == 0) {
+			if(t % (finalinst/20) == 0 && t!=0) {
 				Observation.update_observation();
 				
 				System.out.println(obs.toString());				
@@ -310,7 +310,7 @@ public class Simulation {
 		return xy_f;
 	}
 
-	public PEC getPec() {
+	public PEC<Individual> getPec() {
 		return pec;
 	}
 

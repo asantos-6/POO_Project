@@ -30,7 +30,7 @@ public class Observation {
 		@Override
 		public String toString() {
 			Column_printing c = new Column_printing();
-			c.addLine("Observation: " + n_obs + ":\n", "", "");
+			c.addLine("Observation: " + n_obs + ":", "", "");
 			
 			c.addLine("", "Present instant:", ""+t);
 			c.addLine("", "Number of realized events:", ""+events);

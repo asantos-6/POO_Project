@@ -27,15 +27,15 @@ public class Individual {
 	static int tot_pop=0;
 	static boolean reached_final = false; 
 	static Comparator<Individual> c = new ComfortComparator();
-	static PriorityQueueExt<Individual> population = new PriorityQueueExt<Individual>(10, c);
+	static PriorityQueueExt<Individual> population = new PriorityQueueExt<Individual>(c);
 	
-	public Individual(Coord xy, Node_grid[][] graph, PEC pec, int t) {
+	public Individual(Coord xy, Node_grid[][] graph, PEC<Individual> pec, int t) {
 		cost.add(0);
 		path.add(xy);		
 		length=0;
 		node = graph[xy.getX()-1][xy.getY()-1];
 		dist = calcDist();
-		comfort=0;
+		comfort = this.comfort_update();
 		
 		tot_pop++;
 		
@@ -44,11 +44,11 @@ public class Individual {
 		
 		new Death(pec, t, this);
 		new Move(pec, t, this);
-		//new Reproduction(pec, t, this);
+		new Reproduction(pec, t, this);
 		
 	}
 	
-	public Individual(List<Coord> child_path, List<Integer> child_cost, Node_grid[][] graph, PEC pec, int t) {
+	public Individual(List<Coord> child_path, List<Integer> child_cost, Node_grid[][] graph, PEC<Individual> pec, int t) {
 		cost = child_cost; 
 		path = child_path;
 		length = path.size()-1;
@@ -78,7 +78,8 @@ public class Individual {
 			this.cost.add(this.TotCost() + cost);
 			length++;											
 			path.add(node.getXy());
-			this.comfort_update();
+			
+			comfort = this.comfort_update();
 			
 			if(!reached_final) {
 				if(dist == 0) {
@@ -94,7 +95,7 @@ public class Individual {
 			this.cost = DeepCopy.DeepCopylist_Integer(0, i+1, this.cost);
 			
 			length = path.size()-1;
-			this.comfort_update();
+			comfort = this.comfort_update();
 		}
 		
 		return;
@@ -102,7 +103,7 @@ public class Individual {
 	}
 	
     public float comfort_update (){
-    	return (((1-(this.TotCost()-length+2)/((cmax-1)*length + 3))^k)*((1-(dist/(N+M+1)))^k));    	
+    	return (float) (Math.pow(1.0-(this.TotCost()-length+2.0)/((cmax-1.0)*length+3.0), k)*Math.pow(1.0-(dist)/(N+M+1.0), k));
     }
     
     public static Individual best_fit() {

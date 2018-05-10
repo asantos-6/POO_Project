@@ -11,20 +11,20 @@ import PEC.PEC;
 import Util.*;
 import Simulation.Simulation;
 
-public class Reproduction extends Event {
+public class Reproduction extends Event<Individual> {
 	protected static int ro;
 
-	public Reproduction(PEC pec, int t, Individual z) {
+	public Reproduction(PEC<Individual> pec, int t, Individual z) {
 		super(z);
-		this.t = t +(int) Math.ceil(ExpDistrib.expRandom((double) ro));
+		this.t = t +(int) Math.ceil(ExpDistrib.expRandom((double) (1-Math.log(z.getComfort()))*ro));
 		pec.addEvPEC(this);
 	}
 
 	@Override
-	public <E> void processEvent(PriorityQueue<E> z_list, Object Simulation) {
+	public void processEvent(PriorityQueue<Individual> z_list, Object Simulation) {
 		Simulation sim = (Simulation) Simulation;
 		Individual father = (Individual) this.z; 
-		PriorityQueueExt<?> i_list = (PriorityQueueExt<?>) z_list;
+		PriorityQueueExt<Individual> i_list = (PriorityQueueExt<Individual>) z_list;
 		
 		if(father.isAlive()) {
 		
@@ -37,7 +37,7 @@ public class Reproduction extends Event {
 			
 			Individual child = new Individual(child_path, child_cost, sim.getGrid().getNodes(), sim.getPec(), this.t);			
 			
-			i_list.add_child(child);
+			i_list.add(child);
 			
 			PEC.setN_events(PEC.getN_events()+1);
 		}
@@ -54,4 +54,9 @@ public class Reproduction extends Event {
 		Reproduction.ro = ro;
 	}
 
+	@Override
+	public String toString() {
+		return "Reproduction [t=" + t + ", ro=" + ro + "]";
+	}
+	
 }

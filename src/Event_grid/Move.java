@@ -13,17 +13,17 @@ import PEC.PEC;
 //import PEC.PEC;
 import Simulation.Simulation;
 
-public class Move extends Event {
+public class Move extends Event<Individual> {
 	protected static int delta;
 	
-	public Move(PEC pec, int t, Individual z) {
+	public Move(PEC<Individual> pec, int t, Individual z) {
 		super(z);
-		this.t = t +(int) Math.ceil(ExpDistrib.expRandom((double) delta));
+		this.t = t +(int) Math.ceil(ExpDistrib.expRandom((double) (1-Math.log(z.getComfort()))*delta));
 		pec.addEvPEC(this);
 	}
 	
 	@Override
-	public <E> void processEvent(PriorityQueue<E> z_list, Object Simulation) {		
+	public void processEvent(PriorityQueue<Individual> z_list, Object Simulation) {		
 		Simulation sim = (Simulation) Simulation;
 		Individual i = (Individual) this.z; 
 		

@@ -1,7 +1,7 @@
 package Event;
 import java.util.PriorityQueue;
 
-public abstract class Event implements Comparable<Event>{
+public abstract class Event<E>{
 	protected int t;
 	protected Object z;
 	
@@ -17,7 +17,7 @@ public abstract class Event implements Comparable<Event>{
 		return z;
 	}
 
-	public abstract <E> void processEvent(PriorityQueue<E> z_list, Object Simulation);
+	public abstract void processEvent(PriorityQueue<E> z_list, Object Simulation);
 
 	@Override
 	public int hashCode() {
@@ -40,14 +40,6 @@ public abstract class Event implements Comparable<Event>{
 			return false;
 		return true;
 	}
-
-	@Override
-	public int compareTo(Event other) {
-		if(t > other.t) return 1;
-		else if (t == other.t) return 0;
-		else return -1;
-	}
-	
 	
 	
 }

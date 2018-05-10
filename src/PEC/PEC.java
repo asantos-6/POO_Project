@@ -3,23 +3,23 @@ import java.util.*;
 
 import Event.Event;
 
-public class PEC{
+public class PEC<E>{
 	protected int t;
-	Comparator<Event> c;
-	PriorityQueue<Event> pec;
+	Comparator<Event<E>> c;
+	PriorityQueue<Event<E>> pec;
 	static int n_events;
 	
 	public PEC() {
 		t = 0;
-		c = new EventComparator();
-		pec = new PriorityQueue<Event>(30, c);
+		c = new EventComparator<E>();
+		pec = new PriorityQueue<Event<E>>(c);
 	}
 	
-	public void addEvPEC(Event ev) {
+	public void addEvPEC(Event<E> ev) {
 		pec.add(ev);
 		return;
 	}
-	public Event nextEvPEC() {
+	public Event<E> nextEvPEC() {
 		return pec.poll();
 	}
 
@@ -28,7 +28,7 @@ public class PEC{
 		return "PEC " + pec;
 	}
 
-	public PriorityQueue<Event> getPec() {
+	public PriorityQueue<Event<E>> getPec() {
 		return pec;
 	}
 

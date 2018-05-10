@@ -4,9 +4,9 @@ import java.util.*;
 import Event.Event;
 
 
-public class EventComparator implements Comparator<Event>{
+public class EventComparator<E> implements Comparator<Event<E>>{
     @Override
-    public int compare(Event x, Event y){
+    public int compare(Event<E> x, Event<E> y){
 
         if (x.getT() < y.getT()){
             return -1;
