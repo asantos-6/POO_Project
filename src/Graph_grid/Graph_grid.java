@@ -25,22 +25,25 @@ public class Graph_grid extends Graph{
 		cost_edges = edges;
 		
 		nodes = new Node_grid[M][N];
+		boolean obstacle;
 		
 		
 		for (int y = 1; y <= M; y++) {
 			for (int x = 1; x <= N; x++) {
 			    Coord xy = new Coord(x, y);
+			    obstacle = false;
 			    for(int o = 0; o<n_obs; o++) {
-			    	if(obs[o].equals(xy))
-			    		nodes[y-1][x-1] = new Node_grid(xy, true);
-			    	else
-			    		nodes[y-1][x-1] = new Node_grid(xy, false);
-			    }			    
+			    	if(obs[o].equals(xy)) {
+			    		obstacle = true;
+			    		break;
+			    	}			    	
+			    } 
+			    nodes[y-1][x-1] = new Node_grid(xy, obstacle);
+			    			    
 			}
 		}
 		set_neighbors(nodes, M, N);
 	}
-	
 	
 	public int getN_obs() {
 		return n_obs;
@@ -64,11 +67,11 @@ public class Graph_grid extends Graph{
 				Node_grid n = nodes[y][x];
 			    if (y > 0) {     // has south
 			    	if (!nodes[y-1][x].obs)
-			    		n.getNeighbors()[0] = nodes[y-1][x];
+			    		n.getNeighbors()[2] = nodes[y-1][x];
 			    }
 			    if (y < M-1) { // has north
 			    	if (!nodes[y+1][x].obs)
-			    		n.getNeighbors()[2] = nodes[y+1][x];
+			    		n.getNeighbors()[0] = nodes[y+1][x];
 			    }
 			    if (x > 0) {     // has west
 			    	if (!nodes[y][x-1].obs)
@@ -84,15 +87,15 @@ public class Graph_grid extends Graph{
 	
 	@Override
 	public String toString() {
-		int i = 1;
 		String s = "";
 		
-		for (Edge e : cost_edges) {
-			s = s +"edge "+ i + " : " + e + "\n";
-			i++;
+		for(int i = 0; i<M; i++) {
+			for(int j = 0; j<N; j++) {
+				s = s + this.nodes[i][j];
+			}
 		}
 		
-		return "\nColumns: "+ M + "\nRows: "+ N +"\nMaximum cost of an edge: "+ cmax+"\nNumber of obstacles: "+ n_obs+"\n Special Edges: \n"+ s;
+		return "\nColumns: "+ N + "\nRows: "+ M +"\n"+ s;
 	}
 	
 	

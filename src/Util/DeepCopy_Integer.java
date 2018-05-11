@@ -3,13 +3,10 @@ package Util;
 import java.util.ArrayList;
 import java.util.List;
 
-import Graph.Coord;
+public class DeepCopy_Integer implements DeepCopy<Integer> {	
 
-public interface DeepCopy_interface {
-	/*
-	//INTERFACE!!!
-	public <E> List<E> DeepCopylist(int fromIndex, int toIndex, List<E> list);
-	public static List<Integer> DeepCopylist_Integer(int fromIndex, int toIndex, List<Integer> list) {
+	@Override
+	public List<Integer> DeepCopylist(int fromIndex, int toIndex, List<Integer> list) {
 		List<Integer> new_list = new ArrayList<Integer>(toIndex - fromIndex);
 		for(Integer i : list) {
 			if(((ArrayList<Integer>)list).indexOf(i) < fromIndex)
@@ -23,6 +20,5 @@ public interface DeepCopy_interface {
 		}
 		return new_list;
 	}
-	List<Coord> DeepCopylist(int fromIndex, int toIndex, List<Coord> list);
-	*/
+
 }

@@ -5,8 +5,7 @@
   <initialpoint xinitial="1" yinitial="1"/>
   <finalpoint xfinal="5" yfinal="4"/>
   <specialcostzones>
-    <zone xinitial="2" yinitial="2" xfinal="5" yfinal="3">4</zone>
-    <zone xinitial="2" yinitial="1" xfinal="4" yfinal="4">6</zone>
+    <zone xinitial="2" yinitial="2" xfinal="3" yfinal="3">4</zone>
   </specialcostzones>
   <obstacles num="4">
     <obstacle xpos="2" ypos="1"/>

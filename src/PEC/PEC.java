@@ -19,6 +19,11 @@ public class PEC<E>{
 		pec.add(ev);
 		return;
 	}
+	
+	public void removeEvPEC() {
+		pec.remove();
+		return;
+	}
 	public Event<E> nextEvPEC() {
 		return pec.poll();
 	}
@@ -38,6 +43,12 @@ public class PEC<E>{
 
 	public static int getN_events() {
 		return n_events;
+	}
+	
+	public int getT() {
+		if(!pec.isEmpty())
+			return pec.peek().getT();
+		return -1;
 	}
 
 }

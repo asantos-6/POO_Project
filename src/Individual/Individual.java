@@ -3,6 +3,7 @@ package Individual;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.PriorityQueue;
 
 import Graph.Coord;
 import Graph_grid.Node_grid;
@@ -17,6 +18,7 @@ public class Individual {
 	int length;
 	int dist;
 	boolean alive = true;
+	boolean finalist = false;
 	float comfort;
 	List<Coord> path = new ArrayList<Coord>();
 	Node_grid node;
@@ -26,19 +28,21 @@ public class Individual {
 	
 	static int tot_pop=0;
 	static boolean reached_final = false; 
-	static Comparator<Individual> c = new ComfortComparator();
-	static PriorityQueueExt<Individual> population = new PriorityQueueExt<Individual>(c);
+	static Comparator<Individual> comfort_comparator = new ComfortComparator();
+	static PriorityQueue<Individual> population = new PriorityQueue<Individual>(comfort_comparator);
+	static Comparator<Individual> cost_comparator = new CostComparator();
+	static PriorityQueue<Individual> finalists = new PriorityQueue<Individual>(cost_comparator);	
 	
+	//Init individuals
 	public Individual(Coord xy, Node_grid[][] graph, PEC<Individual> pec, int t) {
 		cost.add(0);
 		path.add(xy);		
 		length=0;
-		node = graph[xy.getX()-1][xy.getY()-1];
+		node = graph[xy.getY()-1][xy.getX()-1];
 		dist = calcDist();
 		comfort = this.comfort_update();
 		
-		tot_pop++;
-		
+		tot_pop++;		
 		population.add(this);
 				
 		
@@ -48,14 +52,37 @@ public class Individual {
 		
 	}
 	
+	//finalists
+	public Individual(List<Integer> cost, int length, boolean alive, float comfort, List<Coord> path, Node_grid node) {
+
+		finalist = true;
+		
+		this.cost = cost;
+		this.length = length;		
+		this.alive = alive;
+		this.comfort = comfort;
+		this.path = path;
+		this.node = node;
+		dist = this.calcDist();
+		
+	}
+	
+	//childs
 	public Individual(List<Coord> child_path, List<Integer> child_cost, Node_grid[][] graph, PEC<Individual> pec, int t) {
 		cost = child_cost; 
 		path = child_path;
 		length = path.size()-1;
 		Coord xy = path.get(path.size()-1);
-		node = graph[xy.getX()-1][xy.getY()-1];
+		node = graph[xy.getY()-1][xy.getX()-1];
 		dist = calcDist();
 		comfort = this.comfort_update();
+		/*
+		if(dist == 0) {
+			finalist = true;
+			finalists.add(this);
+		}
+		*/
+			
 		
 		tot_pop++;
 		population.add(this);
@@ -72,6 +99,7 @@ public class Individual {
 	}
 	public void MoveIndividual(int cost, Node_grid node) {
 		this.node = node;
+		
 		dist = calcDist();
 		
 		if(!path.contains(node.getXy())) {
@@ -81,18 +109,24 @@ public class Individual {
 			
 			comfort = this.comfort_update();
 			
-			if(!reached_final) {
-				if(dist == 0) {
-					Individual.reached_final = true;
-					c = new CostComparator();
-					population.ChangeComparator(c);
-				}
+			if(dist == 0) {
+				finalist = true;
+				Individual.reached_final = true;
+				DeepCopy_Coord dc_c = new DeepCopy_Coord();
+				List<Coord> new_path= dc_c.DeepCopylist(0, this.path.size(), this.path);
+				DeepCopy_Integer dc_i = new DeepCopy_Integer();
+				List<Integer> new_cost= dc_i.DeepCopylist(0, this.cost.size(), this.cost);
+				Individual i = new Individual(new_cost, this.length, this.alive, this.comfort, new_path, this.node);
+				finalists.add(i);
 			}
+			
 		}else {
 			int i = path.indexOf(node.getXy());
 			
-			path = DeepCopy.DeepCopylist_Coord(0, i+1, path);
-			this.cost = DeepCopy.DeepCopylist_Integer(0, i+1, this.cost);
+			DeepCopy_Coord dc_c = new DeepCopy_Coord();
+			path = dc_c.DeepCopylist(0, i+1, path);
+			DeepCopy_Integer dc_i = new DeepCopy_Integer();
+			this.cost = dc_i.DeepCopylist(0, i+1, this.cost);
 			
 			length = path.size()-1;
 			comfort = this.comfort_update();
@@ -107,6 +141,8 @@ public class Individual {
     }
     
     public static Individual best_fit() {
+    	if(reached_final)
+    		return finalists.peek();
 		return population.peek();
 	}
 
@@ -166,17 +202,29 @@ public class Individual {
 		return tot_pop;
 	}
 
+	public int getLength() {
+		return length;
+	}
+
 	public static void setTot_pop(int tot_pop) {
 		Individual.tot_pop = tot_pop;
 	}	
 	
-	public static PriorityQueueExt<Individual> getPopulation() {
+	public static PriorityQueue<Individual> getPopulation() {
 		return population;
 	}
 	
+	
+	public static void setPopulation(PriorityQueue<Individual> population) {
+		Individual.population = population;
+	}
 
 	public static boolean isReached_final() {
 		return reached_final;
+	}
+
+	public boolean isFinalist() {
+		return finalist;
 	}
 
 	public static String print_path(List<Coord> path) {

@@ -16,24 +16,25 @@ public class Reproduction extends Event<Individual> {
 
 	public Reproduction(PEC<Individual> pec, int t, Individual z) {
 		super(z);
-		this.t = t +(int) Math.ceil(ExpDistrib.expRandom((double) (1-Math.log(z.getComfort()))*ro));
+		this.t = t+1 +(int) Math.ceil(ExpDistrib.expRandom((double) (1-Math.log(z.getComfort()))*ro));
 		pec.addEvPEC(this);
 	}
 
 	@Override
-	public void processEvent(PriorityQueue<Individual> z_list, Object Simulation) {
+	public void processEvent(PriorityQueue<Individual> z_list, Object Simulation) {		
 		Simulation sim = (Simulation) Simulation;
 		Individual father = (Individual) this.z; 
-		PriorityQueueExt<Individual> i_list = (PriorityQueueExt<Individual>) z_list;
+		PriorityQueue<Individual> i_list = z_list;
 		
 		if(father.isAlive()) {
-		
 			new Reproduction(sim.getPec(), t, father);
 			
 			int length_child = (int) Math.ceil(0.9*father.getPath().size() + father.getComfort());
 
-			List<Coord> child_path = DeepCopy.DeepCopylist_Coord(0, length_child, father.getPath());
-			List<Integer> child_cost = DeepCopy.DeepCopylist_Integer(0, length_child, father.getCost());
+			DeepCopy_Coord dc_c = new DeepCopy_Coord();
+			List<Coord> child_path = dc_c.DeepCopylist(0, length_child, father.getPath());	
+			DeepCopy_Integer dc_i = new DeepCopy_Integer();
+			List<Integer> child_cost = dc_i.DeepCopylist(0, length_child, father.getCost());
 			
 			Individual child = new Individual(child_path, child_cost, sim.getGrid().getNodes(), sim.getPec(), this.t);			
 			

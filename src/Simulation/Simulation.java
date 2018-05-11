@@ -12,6 +12,7 @@ import Event_grid.Reproduction;
 import Graph.Edge;
 import Graph.Coord;
 import Graph_grid.*;
+import Individual.ComfortComparator;
 import Individual.Individual;
 import PEC.PEC;
 
@@ -34,7 +35,7 @@ public class Simulation {
 	protected Graph_grid grid;
 	protected Observation obs = new Observation();
 	
-	protected static int t=0;
+	protected static int t=1;
 	protected int n_events=0;
 	
 	public Simulation (File inputFile) {
@@ -240,26 +241,25 @@ public class Simulation {
 		
 		
 		
-		for(int n = 0; n<initpop; n++) {
-			
+		for(int n = 0; n<initpop; n++) {		
 			Individual i = new Individual(xy_i, grid.getNodes(), pec, t);
 			Individual.getPopulation().add(i);
 		}
 		
-		return;
 		
 		/*
+		
 		System.out.println("Instante Final: " + finalinst);
 		System.out.println("População Inicial: " + initpop);
 		System.out.println("Max. Pop. : "+ maxpop);
 		System.out.println("Comfort Sensibility" + comfortsens);
 		System.out.println("M: " + colsnb);
 		System.out.println("N: "+ rowsnb );
-		System.out.println("X inicial : " + xy_i.x + " Y inicial : "+ xy_i.y);
-		System.out.println("X final : " + xy_f.x + " Y final : "+ xy_f.y);
+		System.out.println("X inicial : " + xy_i.getX() + " Y inicial : "+ xy_i.getY());
+		System.out.println("X final : " + xy_f.getX() + " Y final : "+ xy_f.getY());
 		System.out.println("Zona especial : \n Xi :" + xinitial + "\n Yi : " + yinitial + "\n Xf :" + xfinal + "\n Yf : " + yfinal );
 		for (int i=0; i<n_obs; i++) {
-			System.out.println("\n Obstacle " + (i+1) + ": X - "+ obstacles[i].x +" Y - " + obstacles[i].y );
+			System.out.println("\n Obstacle " + (i+1) + ": X - "+ obstacles[i].getX() +" Y - " + obstacles[i].getY() );
 		}
 		System.out.println("Death Param: " + death_param );
 		System.out.println("Repro Param: " + repro_param);
@@ -272,32 +272,57 @@ public class Simulation {
 		System.out.println("\n edge " + i +  " : " + e);
 		i++;
 		}
-		*/	
+		*/
+		return;
+		
 	}
 
 	public void simulate() {
 		while(!pec.getPec().isEmpty() && t<finalinst) {
-			
-			pec.nextEvPEC().processEvent(Individual.getPopulation(), this);
-			
-			if(Individual.getTot_pop()==maxpop) {
-				int n = 0;
-
-				for(Individual i : Individual.getPopulation()) {
-					if(n>5) {
-						 boolean alive = new Random().nextDouble() < i.getComfort();
-						i.setAlive(alive);
-					}else if(i.isAlive())
-							n++;
+			while(t == pec.getT()) {
+				if(!((Individual) pec.getPec().peek().getZ()).isAlive())
+					pec.removeEvPEC();
+				else {
+					pec.nextEvPEC().processEvent(Individual.getPopulation(), this);							
+					if(Individual.getTot_pop()>=maxpop) {
+						Comparator<Individual> c = new ComfortComparator();
+						PriorityQueue<Individual> new_pop = new PriorityQueue<Individual>(5, c);					
+						int count = 0;
+						boolean alive;
+						while(count<5) {
+							if(Individual.getPopulation().peek().isAlive()) {
+								Individual i = Individual.getPopulation().poll();
+								Individual survivor = new Individual(i.getCost(), i.getLength(), i.isAlive(), i.getComfort(), i.getPath(), i.getNode());
+								new_pop.add(survivor);
+								count++;
+							}else
+								Individual.getPopulation().remove();
+						}
+						for(Individual i : Individual.getPopulation()) {							
+							if(i.isAlive()) {
+								alive = new Random().nextDouble() < i.getComfort();
+								if (alive) {
+									Individual survivor = new Individual(i.getCost(), i.getLength(), i.isAlive(), i.getComfort(), i.getPath(), i.getNode());
+									new_pop.add(survivor);
+									count++;
+								}
+							}
+					
+						}
+						Individual.setTot_pop(count);
+						Individual.setPopulation(new_pop);
+					}		
+					
 				}
 			}
-			
-			if(t % (finalinst/20) == 0 && t!=0) {
+			t++;
+				
+			if(t % (finalinst/20) == 0) {
 				Observation.update_observation();
 				
 				System.out.println(obs.toString());				
 			}
-			t++;
+			
 		}
 		
 	}
@@ -321,7 +346,5 @@ public class Simulation {
 	public Graph_grid getGrid() {
 		return grid;
 	}
-	
-
 	
 }
