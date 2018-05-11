@@ -35,7 +35,7 @@ public abstract class Event<E>{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Event<E> other = (Event) obj;
+		Event<E> other = (Event<E>) obj;
 		if (t != other.t)
 			return false;
 		return true;
