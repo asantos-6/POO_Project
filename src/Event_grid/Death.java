@@ -20,7 +20,6 @@ public class Death extends Event<Individual> {
 	@Override
 	public void processEvent(PriorityQueue<Individual> z_list, Object Simulation) {
 		Individual i = (Individual) this.z;
-		//PriorityQueue<Individual> i_list = z_list;
 		
 		Individual.setTot_pop(Individual.getTot_pop()-1);
 		

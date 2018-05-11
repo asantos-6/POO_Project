@@ -24,8 +24,6 @@ public class Edge {
 		return c;
 	}
 
-
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;

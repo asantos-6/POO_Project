@@ -15,23 +15,23 @@ import Event_grid.*;
 public class Individual {
 
 	List<Integer> cost = new ArrayList<Integer>();
-	int length;
-	int dist;
-	boolean alive = true;
-	boolean finalist = false;
 	float comfort;
-	List<Coord> path = new ArrayList<Coord>();
-	Node_grid node;
+	private int length;
+	private int dist;
+	private boolean alive = true;
+	private boolean finalist = false;	
+	private List<Coord> path = new ArrayList<Coord>();
+	private Node_grid node;
 	
-	static Coord xy_f;
-	static int cmax, k, N, M;
+	private static Coord xy_f;
+	private static int cmax, k, N, M;
 	
-	static int tot_pop=0;
-	static boolean reached_final = false; 
-	static Comparator<Individual> comfort_comparator = new ComfortComparator();
-	static PriorityQueue<Individual> population = new PriorityQueue<Individual>(comfort_comparator);
-	static Comparator<Individual> cost_comparator = new CostComparator();
-	static PriorityQueue<Individual> finalists = new PriorityQueue<Individual>(cost_comparator);	
+	private static int tot_pop=0;
+	private static boolean reached_final = false; 
+	private static Comparator<Individual> comfort_comparator = new ComfortComparator();
+	private static PriorityQueue<Individual> population = new PriorityQueue<Individual>(comfort_comparator);
+	private static Comparator<Individual> cost_comparator = new CostComparator();
+	private static PriorityQueue<Individual> finalists = new PriorityQueue<Individual>(cost_comparator);	
 	
 	//Init individuals
 	public Individual(Coord xy, Node_grid[][] graph, PEC<Individual> pec, int t) {
@@ -41,6 +41,17 @@ public class Individual {
 		node = graph[xy.getY()-1][xy.getX()-1];
 		dist = calcDist();
 		comfort = this.comfort_update();
+		
+		if(dist == 0) {
+			finalist = true;
+			Individual.reached_final = true;
+			DeepCopy_Coord dc_c = new DeepCopy_Coord();
+			List<Coord> new_path= dc_c.DeepCopylist(0, this.path.size(), this.path);
+			DeepCopy_Integer dc_i = new DeepCopy_Integer();
+			List<Integer> new_cost= dc_i.DeepCopylist(0, this.cost.size(), this.cost);
+			Individual i = new Individual(new_cost, this.length, this.alive, this.comfort, new_path, this.node);
+			finalists.add(i);
+		}
 		
 		tot_pop++;		
 		population.add(this);
@@ -52,7 +63,7 @@ public class Individual {
 		
 	}
 	
-	//finalists
+	//finalists or copy of individuals
 	public Individual(List<Integer> cost, int length, boolean alive, float comfort, List<Coord> path, Node_grid node) {
 
 		finalist = true;
@@ -76,12 +87,16 @@ public class Individual {
 		node = graph[xy.getY()-1][xy.getX()-1];
 		dist = calcDist();
 		comfort = this.comfort_update();
-		/*
 		if(dist == 0) {
 			finalist = true;
-			finalists.add(this);
+			Individual.reached_final = true;
+			DeepCopy_Coord dc_c = new DeepCopy_Coord();
+			List<Coord> new_path= dc_c.DeepCopylist(0, this.path.size(), this.path);
+			DeepCopy_Integer dc_i = new DeepCopy_Integer();
+			List<Integer> new_cost= dc_i.DeepCopylist(0, this.cost.size(), this.cost);
+			Individual i = new Individual(new_cost, this.length, this.alive, this.comfort, new_path, this.node);
+			finalists.add(i);
 		}
-		*/
 			
 		
 		tot_pop++;
@@ -94,9 +109,9 @@ public class Individual {
 	}
 	
 	protected int calcDist() {
-		
 		return Math.abs(Individual.xy_f.getX() - node.getXy().getX())+Math.abs(Individual.xy_f.getY() - node.getXy().getY());
 	}
+	
 	public void MoveIndividual(int cost, Node_grid node) {
 		this.node = node;
 		

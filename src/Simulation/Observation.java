@@ -5,13 +5,13 @@ import PEC.PEC;
 import Util.Column_printing;
 
 public class Observation {
-		static int t=0;
-		static int events;
-		static int size;
-		static boolean final_point;
-		static String best_path;
-		static float cost_comfort;
-		static int n_obs = 0;
+		private static int t=0;
+		private static int events;
+		private static int size;
+		private static boolean final_point;
+		private static String best_path;
+		private static float cost_comfort;
+		private static int n_obs = 0;
 		
 		static void update_observation() {
 			Observation.t = Simulation.t;

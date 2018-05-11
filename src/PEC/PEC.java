@@ -5,9 +5,9 @@ import Event.Event;
 
 public class PEC<E>{
 	protected int t;
-	Comparator<Event<E>> c;
-	PriorityQueue<Event<E>> pec;
-	static int n_events;
+	protected Comparator<Event<E>> c;
+	protected PriorityQueue<Event<E>> pec;
+	protected static int n_events;
 	
 	public PEC() {
 		t = 0;

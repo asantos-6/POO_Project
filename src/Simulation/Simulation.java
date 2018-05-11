@@ -18,25 +18,25 @@ import PEC.PEC;
 
 public class Simulation {
 	
-	protected int finalinst, initpop, maxpop, comfortsens, colsnb, rowsnb, xinitial, yinitial, xfinal, yfinal, n_obs, death_param, repro_param, move_param;
-	protected int cmax, edge_cost;
-	protected int n_edge_max = 0;
+	private int finalinst, initpop, maxpop, comfortsens, colsnb, rowsnb, xinitial, yinitial, xfinal, yfinal, n_obs, death_param, repro_param, move_param;
+	private int cmax, edge_cost;
+	private int n_edge_max = 0;
 	
-	protected Coord [] obstacles;
-	protected Coord xy1_aux;
-	protected Coord xy2_aux;
-	protected Coord  xy_i;
-	protected Coord  xy_f;
+	private Coord [] obstacles;
+	private Coord xy1_aux;
+	private Coord xy2_aux;
+	private Coord  xy_i;
+	private Coord  xy_f;
 
-	protected Edge edge;
-	protected ArrayList<Edge> edges = new ArrayList<Edge>();
+	private Edge edge;
+	private ArrayList<Edge> edges = new ArrayList<Edge>();
 	
-	protected PEC<Individual> pec = new PEC<Individual>();
-	protected Graph_grid grid;
-	protected Observation obs = new Observation();
+	private PEC<Individual> pec = new PEC<Individual>();
+	private Graph_grid grid;
+	private Observation obs = new Observation();
 	
-	protected static int t=1;
-	protected int n_events=0;
+	static int t=1;
+	int n_events=0;
 	
 	public Simulation (File inputFile) {
 		
@@ -56,8 +56,6 @@ public class Simulation {
 
 			@Override
 			public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-
-				//System.out.println("Start Element :" + qName);
 
 				if (qName.equalsIgnoreCase("simulation")) {
 					finalinst = Integer.parseInt(attributes.getValue("finalinst"));
@@ -84,14 +82,12 @@ public class Simulation {
 				if (qName.equalsIgnoreCase("zone") && special_zones) {
 					bzone = true;
 					
-					
 					xinitial = Integer.parseInt(attributes.getValue("xinitial"));
 					yinitial = Integer.parseInt(attributes.getValue("yinitial"));
 					xfinal = Integer.parseInt(attributes.getValue("xfinal"));
 					yfinal = Integer.parseInt(attributes.getValue("yfinal"));
 					
-					n_edge_max = n_edge_max + ((xfinal-xinitial)+(yfinal-yinitial))*2;
-							
+					n_edge_max = n_edge_max + ((xfinal-xinitial)+(yfinal-yinitial))*2;				
 					
 				}
 				if (qName.equalsIgnoreCase("obstacles")) {
@@ -125,8 +121,6 @@ public class Simulation {
 			
 			@Override
 			public void endElement(String uri, String localName, String qName) throws SAXException {
-
-				//System.out.println("End Element :" + qName);
 				
 				if (qName.equalsIgnoreCase("specialcostzones")) {
 					special_zones = false;
@@ -142,8 +136,7 @@ public class Simulation {
 			}
 			
 			@Override
-			public void characters(char ch[], int start, int length) throws SAXException {
-				
+			public void characters(char ch[], int start, int length) throws SAXException {			
 				if (bzone) {
 					
 					edge_cost = Integer.parseInt(new String(ch, start, length));
@@ -151,9 +144,7 @@ public class Simulation {
 					if (cmax < edge_cost) {
 						cmax = edge_cost;
 					}
-					
-					for (int z = xinitial; z < xfinal; z++) {
-						
+					for (int z = xinitial; z < xfinal; z++) {		
 						
 						xy1_aux = new Coord(z,yinitial);
 						xy2_aux = new Coord(z+1, yinitial);		
@@ -170,7 +161,6 @@ public class Simulation {
 					}
 					
 					for (int z = yinitial; z < yfinal; z++) {
-						
 						
 						xy1_aux = new Coord(xinitial,z);
 						xy2_aux = new Coord(xinitial, z+1);		
@@ -202,7 +192,7 @@ public class Simulation {
 		    }
 			
 			
-		};//end DefaultHandler
+		};
 		
 		saxParser.parse(inputFile, handler);
 		 
@@ -240,39 +230,10 @@ public class Simulation {
 		grid = new Graph_grid (rowsnb, colsnb, cmax, n_obs, obstacles, edges);
 		
 		
-		
 		for(int n = 0; n<initpop; n++) {		
 			Individual i = new Individual(xy_i, grid.getNodes(), pec, t);
 			Individual.getPopulation().add(i);
 		}
-		
-		
-		/*
-		
-		System.out.println("Instante Final: " + finalinst);
-		System.out.println("População Inicial: " + initpop);
-		System.out.println("Max. Pop. : "+ maxpop);
-		System.out.println("Comfort Sensibility" + comfortsens);
-		System.out.println("M: " + colsnb);
-		System.out.println("N: "+ rowsnb );
-		System.out.println("X inicial : " + xy_i.getX() + " Y inicial : "+ xy_i.getY());
-		System.out.println("X final : " + xy_f.getX() + " Y final : "+ xy_f.getY());
-		System.out.println("Zona especial : \n Xi :" + xinitial + "\n Yi : " + yinitial + "\n Xf :" + xfinal + "\n Yf : " + yfinal );
-		for (int i=0; i<n_obs; i++) {
-			System.out.println("\n Obstacle " + (i+1) + ": X - "+ obstacles[i].getX() +" Y - " + obstacles[i].getY() );
-		}
-		System.out.println("Death Param: " + death_param );
-		System.out.println("Repro Param: " + repro_param);
-		System.out.println("Move Param: " + move_param);
-		System.out.println("Edge Cost " + edge_cost);
-		System.out.println("N_Edge Max " + n_edge_max);
-		System.out.println("\n Edge List : ");
-		int i= 1;
-		for(Edge e: edges) {
-		System.out.println("\n edge " + i +  " : " + e);
-		i++;
-		}
-		*/
 		return;
 		
 	}
@@ -318,8 +279,7 @@ public class Simulation {
 			t++;
 				
 			if(t % (finalinst/20) == 0) {
-				Observation.update_observation();
-				
+				Observation.update_observation();	
 				System.out.println(obs.toString());				
 			}
 			

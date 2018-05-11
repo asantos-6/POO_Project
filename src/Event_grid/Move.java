@@ -33,19 +33,19 @@ public class Move extends Event<Individual> {
 			int r;
 			Node_grid node;
 			do {
-			r = random.nextInt(4);
-			node = (Node_grid) i.getNode().getNeighbors()[r];		
+				r = random.nextInt(4);
+				node = (Node_grid) i.getNode().getNeighbors()[r];		
 			}while(node == null);
 			
 			int cost = 0;
 			Edge edge = new Edge(i.getNode().getXy(), node.getXy(), cost);
 			List<Edge> edges = sim.getEdges();
 			
-			if(edges.contains(edge)) {
+			if(edges.contains(edge))
 				cost = edges.get(edges.indexOf(edge)).getC();				
-			}else {
+			else
 				cost = 1;
-			}
+			
 			
 			i.MoveIndividual(cost, node);
 			new Move(sim.getPec(), t, i);
